@@ -19,31 +19,30 @@ class SubscriberRepository
         //Todo use uuid v4 or longer uuid
         $uuid = uniqid();
 
-        $new_subscriber = DB::table($this->subscriber->getTable())->insert([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'link_id' => $uuid,
+        return DB::table($this->subscriber->getTable())->insert([
+            'name'       => $data['name'],
+            'email'      => $data['email'],
+            'link_id'    => $uuid,
             'expired_on' => now()->addMonth(3),
             'created_at' => now(),
             'updated_at' => now(),
         ]);
-
-        if ($new_subscriber) {
-            return $uuid;
-        }
-
-        return false;
     }
 
     public function unsubscribe($id){
-        $unsubscribe = Subscriber::find($id);
 
-        DB::table($this->subscriber->getTable())->where('id',  $id)
+        return DB::table($this->subscriber->getTable())->whereId($id)
             ->update(['is_subscribed' => 0]);
-        if ($unsubscribe) {
-            return true;
-        }
-
-        return false;
     }
+
+    public function update($data){
+        return DB::table($this->subscriber->getTable())->whereId($data['id'])
+           ->update([
+               'name'          => $data['name'],
+               'email'         => $data['email'],
+               'is_subscribed' => $data['is_subscribed'],
+               'expired_on'    => $data['expired_on'],
+           ]);
+    }
+
 }
