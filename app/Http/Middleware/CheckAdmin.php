@@ -19,9 +19,8 @@ class CheckAdmin
         $admin_status = DB::table('users')
             ->where('id', auth()->id())
             ->select('is_admin' )
-            ->get();
+            ->first();
 
-        dd($admin_status);
         if($admin_status->is_admin !== 1){
             // not admin;
             abort(404);

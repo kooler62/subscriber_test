@@ -23,7 +23,7 @@ Route::post('unsubscribe/{uuid}', 'SubscriberController@unSubscribe')->name('sub
 Route::resource('subscribers', 'SubscriberController');
 
 Route::name('admin.')->group(function () {
-    Route::resource('admin/subscribers', 'Admin\SubscriberController');/*->middleware('is_admin')*/
+    Route::resource('admin/subscribers', 'Admin\SubscriberController');
 });
 //A page
 Route::get('materials/{uuid}', 'MaterialController@index')->name('materials.index');
