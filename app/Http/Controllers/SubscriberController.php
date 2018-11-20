@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Subscriber;
+use App\Repositories\SubscriberRepository;
+
 use Illuminate\Http\Request;
+use App\Http\Requests\StoreSubscriberRequest;
 
 class SubscriberController extends Controller
 {
@@ -14,7 +17,7 @@ class SubscriberController extends Controller
      */
     public function index()
     {
-        //
+        dd(77);
     }
 
     /**
@@ -33,9 +36,14 @@ class SubscriberController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreSubscriberRequest $request, SubscriberRepository $subscriberRepo)
     {
-        //
+       $user_link = $subscriberRepo->subscriber_add($request->except(['_token', '_method']));
+
+        if($user_link){
+            return redirect()->route('materials.index',['uuid' => $user_link]);
+        }
+        return back();
     }
 
     /**
@@ -71,6 +79,18 @@ class SubscriberController extends Controller
     {
         //
     }
+
+
+    public function unSubscribe($uuid, SubscriberRepository $subscriberRepo)
+    {
+        $subscriber = Subscriber::where('link_id', $uuid)->firstOrFail();
+
+        if( $subscriberRepo->unsubscribe($subscriber->id)){
+            return view('unsubscribe');
+        }
+        abort(401);
+    }
+
 
     /**
      * Remove the specified resource from storage.

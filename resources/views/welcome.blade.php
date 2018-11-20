@@ -78,18 +78,26 @@
             @endif
 
             <div class="content">
-                <div class="title m-b-md">
-                    Laravel
-                </div>
+                {{Form::open(['route' => 'subscribers.store'])}}
 
-                <div class="links">
-                    <a href="https://laravel.com/docs">Documentation</a>
-                    <a href="https://laracasts.com">Laracasts</a>
-                    <a href="https://laravel-news.com">News</a>
-                    <a href="https://nova.laravel.com">Nova</a>
-                    <a href="https://forge.laravel.com">Forge</a>
-                    <a href="https://github.com/laravel/laravel">GitHub</a>
-                </div>
+                {{ Form::label('name', 'name') }}
+                {{ Form::text('name', null, [ "class" => "form-control", "placeholder" => "name"]) }}
+
+                @if ($errors->has('name'))
+                    {{ $errors->first('name') }}
+                @endif
+
+                {{ Form::label('email', 'email') }}
+                {{ Form::text('email', null, [ "class" => "form-control", "placeholder" => "email"]) }}
+
+                @if ($errors->has('email'))
+                    {{ $errors->first('email') }}
+                @endif
+
+                {{ Form::submit('Subscribe') }}
+
+                {{Form::close()}}
+
             </div>
         </div>
     </body>

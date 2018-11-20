@@ -18,7 +18,7 @@ class CreateSubscribersTable extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->boolean('is_subscribed')->default(1);
-            $table->uuid('link_id');
+            $table->uuid('link_id')->unique();
             $table->timestamp('expired_on')->nullable();
             $table->timestamps();
         });

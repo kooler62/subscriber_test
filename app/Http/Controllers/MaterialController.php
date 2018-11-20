@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Material;
+use App\{Material, Subscriber};
 use Illuminate\Http\Request;
 
 class MaterialController extends Controller
@@ -12,9 +12,15 @@ class MaterialController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($uuid)
     {
-        //
+        $subscriber = Subscriber::where('link_id', $uuid)->firstOrFail();
+
+        if(now() >= $subscriber->expired_on){
+            abort(401);
+        }
+
+        return view('materials.index', compact('subscriber'));
     }
 
     /**

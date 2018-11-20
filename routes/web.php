@@ -18,3 +18,13 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+Route::post('unsubscribe/{uuid}', 'SubscriberController@unSubscribe')->name('subscribers.unsubscribe');
+Route::resource('subscribers', 'SubscriberController');
+
+//A page
+Route::get('materials/{uuid}', 'MaterialController@index')->name('materials.index');
+
+Route::resource('materials', 'MaterialController')->except('index');
+
+
