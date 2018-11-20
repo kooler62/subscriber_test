@@ -2,90 +2,36 @@
 
 namespace App\Http\Controllers;
 
-use App\{Material, Subscriber};
-use Illuminate\Http\Request;
+use App\{Material, Subscriber, Visitor};
+use Storage, Exception, Crypt;
 
 class MaterialController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index($uuid)
     {
         $subscriber = Subscriber::where('link_id', $uuid)->firstOrFail();
+        $materials = Material::all();
 
         if(now() >= $subscriber->expired_on){
             abort(401);
         }
-
-        return view('materials.index', compact('subscriber'));
+        return view('materials.index', compact('subscriber', 'materials'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function show($hash, $file_src)
     {
-        //
-    }
+        try{
+            $data = explode(", ", Crypt::decryptString($hash));
+        }catch(Exception $e){
+            abort('404');
+        }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+        $material = Material::findOrFail($data['0']);
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Material  $material
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Material $material)
-    {
-        //
-    }
+        if($material->src !== $data['2']){
+            abort('404');
+        }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Material  $material
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Material $material)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Material  $material
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Material $material)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Material  $material
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Material $material)
-    {
-        //
+        return response()->file(Storage_path('app/public/'. $material->src));
     }
 }

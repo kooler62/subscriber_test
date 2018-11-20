@@ -25,9 +25,7 @@ Route::resource('subscribers', 'SubscriberController');
 Route::name('admin.')->group(function () {
     Route::resource('admin/subscribers', 'Admin\SubscriberController');
 });
+Route::get('materials/{hash}/{name}', 'MaterialController@show');
+
 //A page
 Route::get('materials/{uuid}', 'MaterialController@index')->name('materials.index');
-
-Route::resource('materials', 'MaterialController')->except('index');
-
-

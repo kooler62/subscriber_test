@@ -19,7 +19,7 @@ class SubscriberRepository
         //Todo use uuid v4 or longer uuid
         $uuid = uniqid();
 
-        return DB::table($this->subscriber->getTable())->insert([
+        $new_subscriber = DB::table($this->subscriber->getTable())->insert([
             'name'       => $data['name'],
             'email'      => $data['email'],
             'link_id'    => $uuid,
@@ -27,6 +27,12 @@ class SubscriberRepository
             'created_at' => now(),
             'updated_at' => now(),
         ]);
+
+        if ($new_subscriber) {
+            return $uuid;
+        }
+
+        return false;
     }
 
     public function unsubscribe($id){
