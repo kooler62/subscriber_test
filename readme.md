@@ -6,7 +6,7 @@
  4. `php artisan key:generate`
  5. create database  
  6. configure .env file with your database     
- 7.    php artisan migrate --seed  
+ 7. `php artisan migrate --seed`  
  8. `php artisan serve` visit site on `http://127.0.0.1:8000`
    
  
