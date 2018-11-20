@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Seeder;
 use App\User;
+
 class UsersTableSeeder extends Seeder
 {
     /**
@@ -13,10 +14,9 @@ class UsersTableSeeder extends Seeder
     {
         User::insert([
             'name' => 'admin',
-            'email' => 'admin@ad.min',
+            'email' => 'admin@gmail.com',
             'password' => bcrypt('111111'),
             'is_admin' => 1,
         ]);
-
     }
 }
